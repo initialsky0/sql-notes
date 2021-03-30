@@ -142,3 +142,42 @@
 -- GROUP BY emp.emp_no 
 -- HAVING count(de.dept_no) > 1 
 -- ORDER BY emp.emp_no;
+
+/* View */
+-- Shows me all the employees, hired between 1990 and 1995
+-- CREATE VIEW "90-95" AS 
+-- SELECT *, 
+--     EXTRACT(YEAR FROM hire_date) AS "hire_year"
+-- FROM employees 
+-- WHERE EXTRACT(YEAR FROM hire_date) BETWEEN 1990 AND 1995;
+
+-- Shows me all employees that have ever had a salary over 80000
+-- CREATE VIEW "bigbucks" AS
+-- SELECT * 
+-- FROM employees AS emp 
+-- JOIN salaries AS sal USING(emp_no) 
+-- WHERE sal.salary > 80000 
+-- ORDER BY emp.emp_no, sal.to_date;
+
+/* Subqueries */
+-- Filter employees who have emp_no 110183 as a manager
+-- Using JOIN only --
+-- SELECT emp.*, de.dept_no AS "department", dm.emp_no AS "manager id" 
+-- FROM employees AS emp 
+-- JOIN dept_emp AS de USING(emp_no) 
+-- JOIN dept_manager AS dm USING(dept_no) 
+-- WHERE dm.emp_no = 110183 AND emp.hire_date BETWEEN dm.from_date AND dm.to_date 
+-- ORDER BY emp.hire_date;
+-- use subqueries --
+-- SELECT emp_no, first_name, last_name, hire_date
+-- FROM employees
+-- WHERE emp_no IN (
+--     SELECT emp_no
+--     FROM dept_emp
+--     WHERE dept_no = (
+--         SELECT dept_no 
+--         FROM dept_manager
+--         WHERE emp_no = 110183 AND dept_emp.from_date BETWEEN dept_manager.from_date AND dept_manager.to_date
+--     )
+-- )
+-- ORDER BY hire_date;

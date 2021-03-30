@@ -78,3 +78,39 @@
 -- INNER JOIN inventory AS inv 
 -- ON prod.prod_id = inv.prod_id;
 
+/* Conditional */
+-- Create a case statement that's named "price class" where if a product is over 20 dollars you show 'expensive'
+-- if it's between 10 and 20 you show 'average' 
+-- and of is lower than or equal to 10 you show 'cheap'.
+-- SELECT prod_id, 
+--     price, 
+--     CASE WHEN price > 20 THEN 'expensive' 
+--          WHEN price BETWEEN 10 AND 20 THEN 'average' 
+--          ELSE 'cheap' 
+--     END AS "price class"
+-- FROM products;
+
+-- Show NULL when the product is not on special (0)
+-- SELECT  prod_id, title, price, NULLIF(special, 0) AS "special"
+-- FROM products;
+
+/* Subqueries */
+-- Get all orders from customers who live in Ohio (OH), New York (NY) or Oregon (OR) state
+-- ordered by orderid
+-- SELECT orders.*, matching.state
+-- FROM orders 
+-- JOIN (
+--     SELECT customerid, state 
+--     FROM customers 
+--     WHERE state IN ('OH', 'NY', 'OR')
+-- ) AS "matching" USING(customerid) 
+-- ORDER BY orderid;
+-- (Using WHERE only) --
+-- SELECT orders.*
+-- FROM orders 
+-- WHERE orders.customerid IN (
+--     SELECT customerid
+--     FROM customers 
+--     WHERE state IN ('OH', 'NY', 'OR')
+-- )
+-- ORDER BY orderid;
